@@ -20,6 +20,7 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
 }) => {
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
   const [editingElementId, setEditingElementId] = useState<string | null>(null);
+  const [showFormattingToolbar, setShowFormattingToolbar] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   // Load fonts for all text elements on mount
@@ -211,6 +212,7 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
   const handleCanvasClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       setSelectedElementId(null);
+      setShowFormattingToolbar(false);
     }
   };
 
@@ -258,20 +260,25 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
               ⬇ Back
             </button>
             {selectedElement.type === 'text' && (
-              <button onClick={() => handleTextEdit(selectedElement.id)} className="toolbar-btn-sm">
-                ✏ Edit Text
-              </button>
+              <>
+                <button onClick={() => setShowFormattingToolbar(true)} className="toolbar-btn-sm">
+                  🎨 Format
+                </button>
+                <button onClick={() => handleTextEdit(selectedElement.id)} className="toolbar-btn-sm">
+                  ✏ Edit Text
+                </button>
+              </>
             )}
           </>
         )}
       </div>
 
       {/* Text Formatting Toolbar */}
-      {selectedElement && selectedElement.type === 'text' && !editingElementId && (
+      {selectedElement && selectedElement.type === 'text' && !editingElementId && showFormattingToolbar && (
         <TextFormattingToolbar
           element={selectedElement as TextElement}
           onUpdate={(updates) => updateElement(selectedElement.id, updates)}
-          onClose={() => setSelectedElementId(null)}
+          onClose={() => setShowFormattingToolbar(false)}
         />
       )}
 
