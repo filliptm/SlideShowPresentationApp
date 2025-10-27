@@ -1,0 +1,123 @@
+.draggable-element {
+  position: absolute;
+  cursor: move;
+  user-select: none;
+}
+
+.draggable-element.dragging {
+  opacity: 0.8;
+  cursor: grabbing;
+}
+
+.draggable-element.resizing {
+  opacity: 0.8;
+}
+
+.element-content {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.draggable-element.selected .element-content {
+  pointer-events: auto;
+}
+
+.selection-outline {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #2563eb;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Resize handles */
+.resize-handle {
+  position: absolute;
+  background: #2563eb;
+  border: 2px solid white;
+  width: 10px;
+  height: 10px;
+  z-index: 2;
+}
+
+.resize-handle.nw {
+  top: -5px;
+  left: -5px;
+  cursor: nw-resize;
+}
+
+.resize-handle.n {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: n-resize;
+}
+
+.resize-handle.ne {
+  top: -5px;
+  right: -5px;
+  cursor: ne-resize;
+}
+
+.resize-handle.w {
+  top: 50%;
+  left: -5px;
+  transform: translateY(-50%);
+  cursor: w-resize;
+}
+
+.resize-handle.e {
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
+  cursor: e-resize;
+}
+
+.resize-handle.sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: sw-resize;
+}
+
+.resize-handle.s {
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: s-resize;
+}
+
+.resize-handle.se {
+  bottom: -5px;
+  right: -5px;
+  cursor: se-resize;
+}
+
+.delete-handle {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background: #dc2626;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 3;
+  padding: 0;
+  line-height: 1;
+}
+
+.delete-handle:hover {
+  background: #b91c1c;
+  transform: scale(1.1);
+}

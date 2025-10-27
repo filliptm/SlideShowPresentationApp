@@ -1,0 +1,171 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-home {
+  height: 100vh;
+  background: #0a0a0a;
+  color: #fff;
+  padding: 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.create-btn {
+  padding: 0.875rem 1.75rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.create-btn:hover {
+  background: #1d4ed8;
+}
+
+.presentations-grid {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding-bottom: 2rem;
+  align-content: start;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+.empty-state p:first-child {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p:last-child {
+  font-size: 1rem;
+}
+
+.presentation-card {
+  background: #151515;
+  border: 2px solid #222;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.presentation-card:hover {
+  border-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.card-content h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.slide-count {
+  margin: 0.5rem 0;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.date {
+  margin: 0.5rem 0 1rem 0;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #222;
+}
+
+.delete-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.editor-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-header {
+  background: #151515;
+  border-bottom: 1px solid #333;
+  padding: 1rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  border-color: #555;
+  color: white;
+}

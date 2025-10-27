@@ -1,0 +1,142 @@
+.player-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  color: #fff;
+  z-index: 9999;
+}
+
+.player-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.player-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  aspect-ratio: 16 / 9;
+}
+
+.player-element {
+  position: absolute;
+}
+
+.player-text-element {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.player-image-element,
+.player-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.player-video-element {
+  border-radius: 8px;
+}
+
+.player-controls {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+}
+
+.player-controls button {
+  padding: 0.75rem 1.5rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.player-controls button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.player-controls button:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.player-controls .exit-btn {
+  background: #dc2626;
+}
+
+.player-controls .exit-btn:hover {
+  background: #b91c1c;
+}
+
+.slide-counter {
+  padding: 0 0.5rem;
+  font-weight: 500;
+  color: #aaa;
+  min-width: 80px;
+  text-align: center;
+}
+
+.keyboard-hint {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.875rem;
+  color: #aaa;
+  backdrop-filter: blur(10px);
+}
+
+.no-slides {
+  text-align: center;
+}
+
+.no-slides p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.no-slides button {
+  padding: 1rem 2rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.no-slides button:hover {
+  background: #1d4ed8;
+}
