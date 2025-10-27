@@ -142,12 +142,20 @@ export const NewSlideEditor: React.FC<SlideEditorProps> = ({ presentation, onUpd
     onUpdate({ ...normalizedPresentation, slides });
   };
 
+  const handlePlay = () => {
+    onPlay();
+    // Request fullscreen after play is initiated
+    setTimeout(() => {
+      document.documentElement.requestFullscreen?.();
+    }, 100);
+  };
+
   return (
     <div className="new-slide-editor">
       <div className="sidebar">
         <div className="sidebar-header">
           <h2>{presentation.name}</h2>
-          <button onClick={onPlay} className="play-btn">▶ Play</button>
+          <button onClick={handlePlay} className="play-btn">▶ Play</button>
         </div>
 
         <div className="slide-list">
