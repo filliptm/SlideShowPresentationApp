@@ -17,10 +17,27 @@ export interface BaseElement {
 export interface TextElement extends BaseElement {
   type: 'text';
   content: string;
+
+  // Basic formatting
   fontSize?: number; // in rem
   fontWeight?: string;
-  textAlign?: 'left' | 'center' | 'right';
+  textAlign?: 'left' | 'center' | 'right' | 'justify';
   color?: string;
+
+  // Advanced typography
+  fontFamily?: string;
+  fontStyle?: 'normal' | 'italic';
+  textDecoration?: 'none' | 'underline' | 'line-through' | 'underline line-through';
+  lineHeight?: number;
+  letterSpacing?: number;
+  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+  backgroundColor?: string;
+  opacity?: number;
+  textShadow?: string;
+  textStroke?: {
+    width: number;
+    color: string;
+  };
 }
 
 export interface ImageElement extends BaseElement {

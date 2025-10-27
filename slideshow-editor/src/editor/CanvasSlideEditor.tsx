@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Slide, SlideElement, TextElement, ImageElement, VideoElement, ElementPosition } from '../types/index';
 import { DraggableElement } from './DraggableElement';
 import { ProjectManager } from '../core/ProjectManager';
+import { InlineTextEditor } from './InlineTextEditor';
+import { TextFormattingToolbar } from './TextFormattingToolbar';
 import './CanvasSlideEditor.css';
 
 interface CanvasSlideEditorProps {
@@ -16,6 +18,7 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
   onUpdate,
 }) => {
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
+  const [editingElementId, setEditingElementId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
   const addTextElement = () => {
@@ -199,13 +202,15 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
   };
 
   const handleTextEdit = (elementId: string) => {
-    const element = slide.elements.find(el => el.id === elementId);
-    if (element && element.type === 'text') {
-      const newText = prompt('Edit text:', element.content);
-      if (newText !== null) {
-        updateElement(elementId, { content: newText });
-      }
-    }
+    setEditingElementId(elementId);
+  };
+
+  const handleTextChange = (elementId: string, newContent: string) => {
+    updateElement(elementId, { content: newContent });
+  };
+
+  const handleTextBlur = () => {
+    setEditingElementId(null);
   };
 
   const selectedElement = slide.elements.find(el => el.id === selectedElementId);
@@ -248,6 +253,14 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
         )}
       </div>
 
+      {/* Text Formatting Toolbar */}
+      {selectedElement && selectedElement.type === 'text' && !editingElementId && (
+        <TextFormattingToolbar
+          element={selectedElement as TextElement}
+          onUpdate={(updates) => updateElement(selectedElement.id, updates)}
+        />
+      )}
+
       <div
         className="canvas-container"
         onClick={handleCanvasClick}
@@ -270,20 +283,47 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
               onPositionChange={(pos) => updateElementPosition(element.id, pos)}
               onDelete={() => deleteElement(element.id)}
               lockAspectRatio={element.type !== 'text' && (element as ImageElement | VideoElement).lockAspectRatio}
+              isEditing={editingElementId === element.id}
             >
               {element.type === 'text' && (
-                <div
-                  className="text-element"
-                  style={{
-                    fontSize: `${(element as TextElement).fontSize || 2}rem`,
-                    textAlign: (element as TextElement).textAlign || 'left',
-                    color: (element as TextElement).color || '#ffffff',
-                    fontWeight: (element as TextElement).fontWeight || 'normal',
-                  }}
-                  onDoubleClick={() => handleTextEdit(element.id)}
-                >
-                  {(element as TextElement).content}
-                </div>
+                editingElementId === element.id ? (
+                  <InlineTextEditor
+                    content={(element as TextElement).content}
+                    fontSize={(element as TextElement).fontSize || 2}
+                    color={(element as TextElement).color || '#ffffff'}
+                    textAlign={(element as TextElement).textAlign || 'left'}
+                    fontWeight={(element as TextElement).fontWeight || 'normal'}
+                    fontFamily={(element as TextElement).fontFamily}
+                    fontStyle={(element as TextElement).fontStyle}
+                    textDecoration={(element as TextElement).textDecoration}
+                    lineHeight={(element as TextElement).lineHeight}
+                    letterSpacing={(element as TextElement).letterSpacing}
+                    onChange={(content) => handleTextChange(element.id, content)}
+                    onBlur={handleTextBlur}
+                  />
+                ) : (
+                  <div
+                    className="text-element"
+                    style={{
+                      fontSize: `${(element as TextElement).fontSize || 2}rem`,
+                      textAlign: (element as TextElement).textAlign || 'left',
+                      color: (element as TextElement).color || '#ffffff',
+                      fontWeight: (element as TextElement).fontWeight || 'normal',
+                      fontFamily: (element as TextElement).fontFamily || 'inherit',
+                      fontStyle: (element as TextElement).fontStyle || 'normal',
+                      textDecoration: (element as TextElement).textDecoration || 'none',
+                      lineHeight: (element as TextElement).lineHeight || 1.5,
+                      letterSpacing: (element as TextElement).letterSpacing ? `${(element as TextElement).letterSpacing}rem` : 'normal',
+                      textTransform: (element as TextElement).textTransform || 'none',
+                      backgroundColor: (element as TextElement).backgroundColor || 'transparent',
+                      opacity: (element as TextElement).opacity ?? 1,
+                      textShadow: (element as TextElement).textShadow || 'none',
+                    }}
+                    onDoubleClick={() => handleTextEdit(element.id)}
+                  >
+                    {(element as TextElement).content}
+                  </div>
+                )
               )}
 
               {element.type === 'image' && (

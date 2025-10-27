@@ -99,6 +99,15 @@ export const NewPlayer: React.FC<PlayerProps> = ({ presentation, onExit }) => {
                       textAlign: (element as TextElement).textAlign || 'left',
                       color: (element as TextElement).color || '#ffffff',
                       fontWeight: (element as TextElement).fontWeight || 'normal',
+                      fontFamily: (element as TextElement).fontFamily || 'inherit',
+                      fontStyle: (element as TextElement).fontStyle || 'normal',
+                      textDecoration: (element as TextElement).textDecoration || 'none',
+                      lineHeight: (element as TextElement).lineHeight || 1.5,
+                      letterSpacing: (element as TextElement).letterSpacing ? `${(element as TextElement).letterSpacing}rem` : 'normal',
+                      textTransform: (element as TextElement).textTransform || 'none',
+                      backgroundColor: (element as TextElement).backgroundColor || 'transparent',
+                      opacity: (element as TextElement).opacity ?? 1,
+                      textShadow: (element as TextElement).textShadow || 'none',
                     }}
                   >
                     {(element as TextElement).content}

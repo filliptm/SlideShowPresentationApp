@@ -11,6 +11,7 @@ interface DraggableElementProps {
   onDelete: () => void;
   children: React.ReactNode;
   lockAspectRatio?: boolean;
+  isEditing?: boolean;
 }
 
 type ResizeHandle = 'nw' | 'n' | 'ne' | 'w' | 'e' | 'sw' | 's' | 'se' | null;
@@ -24,6 +25,7 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({
   onDelete,
   children,
   lockAspectRatio = false,
+  isEditing = false,
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -41,6 +43,12 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({
   }, [lockAspectRatio, position.width, position.height]);
 
   const handleMouseDown = (e: React.MouseEvent, handle?: ResizeHandle) => {
+    // Disable dragging/resizing while editing
+    if (isEditing) {
+      e.stopPropagation();
+      return;
+    }
+
     e.stopPropagation();
 
     if (!isSelected) {
@@ -152,9 +160,15 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({
 
   // Handle keyboard events
   useEffect(() => {
-    if (!isSelected) return;
+    if (!isSelected || isEditing) return; // Don't handle delete when editing
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Only delete if not focused on an input/contenteditable
+      const target = e.target as HTMLElement;
+      if (target.isContentEditable || target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        return;
+      }
+
       if (e.key === 'Delete' || e.key === 'Backspace') {
         e.preventDefault();
         onDelete();
@@ -163,7 +177,7 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isSelected, onDelete]);
+  }, [isSelected, isEditing, onDelete]);
 
   return (
     <div
@@ -181,7 +195,7 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({
         {children}
       </div>
 
-      {isSelected && (
+      {isSelected && !isEditing && (
         <>
           <div className="selection-outline" />
 
