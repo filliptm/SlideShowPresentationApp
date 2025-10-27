@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Slide, SlideElement, TextElement, ImageElement, VideoElement, ElementPosition } from '../types/index';
 import { DraggableElement } from './DraggableElement';
 import { ProjectManager } from '../core/ProjectManager';
 import { InlineTextEditor } from './InlineTextEditor';
 import { TextFormattingToolbar } from './TextFormattingToolbar';
+import { loadGoogleFont } from '../utils/fontLoader';
 import './CanvasSlideEditor.css';
 
 interface CanvasSlideEditorProps {
@@ -20,6 +21,18 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
   const [editingElementId, setEditingElementId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  // Load fonts for all text elements on mount
+  useEffect(() => {
+    slide.elements.forEach((element) => {
+      if (element.type === 'text') {
+        const textElement = element as TextElement;
+        if (textElement.fontFamily) {
+          loadGoogleFont(textElement.fontFamily);
+        }
+      }
+    });
+  }, [slide.elements]);
 
   const addTextElement = () => {
     const newElement: TextElement = {
@@ -258,6 +271,7 @@ export const CanvasSlideEditor: React.FC<CanvasSlideEditorProps> = ({
         <TextFormattingToolbar
           element={selectedElement as TextElement}
           onUpdate={(updates) => updateElement(selectedElement.id, updates)}
+          onClose={() => setSelectedElementId(null)}
         />
       )}
 

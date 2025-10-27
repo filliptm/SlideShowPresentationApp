@@ -1,5 +1,8 @@
 .text-formatting-toolbar {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -8,8 +11,21 @@
   border: 1px solid #333;
   border-radius: 8px;
   flex-wrap: wrap;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+}
+
+.text-formatting-toolbar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
 }
 
 .toolbar-section {

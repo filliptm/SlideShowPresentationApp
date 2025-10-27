@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Presentation, TextElement, ImageElement, VideoElement } from '../types/index';
+import { loadGoogleFont } from '../utils/fontLoader';
 import './NewPlayer.css';
 
 interface PlayerProps {
@@ -9,6 +10,20 @@ interface PlayerProps {
 
 export const NewPlayer: React.FC<PlayerProps> = ({ presentation, onExit }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  // Load fonts for all text elements on mount
+  useEffect(() => {
+    presentation.slides.forEach((slide) => {
+      slide.elements.forEach((element) => {
+        if (element.type === 'text') {
+          const textElement = element as TextElement;
+          if (textElement.fontFamily) {
+            loadGoogleFont(textElement.fontFamily);
+          }
+        }
+      });
+    });
+  }, [presentation]);
 
   const goToNextSlide = useCallback(() => {
     setCurrentSlideIndex((prev) =>

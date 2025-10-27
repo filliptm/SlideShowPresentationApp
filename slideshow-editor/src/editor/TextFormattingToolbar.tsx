@@ -7,6 +7,7 @@ import './TextFormattingToolbar.css';
 interface TextFormattingToolbarProps {
   element: TextElement;
   onUpdate: (updates: Partial<TextElement>) => void;
+  onClose?: () => void;
 }
 
 const FONT_FAMILIES = [...WEB_SAFE_FONTS, ...GOOGLE_FONTS];
@@ -14,6 +15,7 @@ const FONT_FAMILIES = [...WEB_SAFE_FONTS, ...GOOGLE_FONTS];
 export const TextFormattingToolbar: React.FC<TextFormattingToolbarProps> = ({
   element,
   onUpdate,
+  onClose,
 }) => {
   const [showShadowControls, setShowShadowControls] = useState(false);
 
@@ -57,13 +59,54 @@ export const TextFormattingToolbar: React.FC<TextFormattingToolbarProps> = ({
     }
   };
 
+  // Handle Escape key to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && onClose) {
+        e.preventDefault();
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div
-      className="text-formatting-toolbar"
-      onMouseDown={(e) => e.stopPropagation()}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Presets */}
+    <>
+      <div
+        className="text-formatting-toolbar-backdrop"
+        onClick={onClose}
+        onMouseDown={(e) => e.stopPropagation()}
+      />
+      <div
+        className="text-formatting-toolbar"
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header with Close Button */}
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <h3 style={{ margin: 0, fontSize: '1rem', color: '#fff' }}>Text Formatting</h3>
+          {onClose && (
+            <button
+              onClick={onClose}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#aaa',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                padding: '0',
+                lineHeight: '1',
+              }}
+              title="Close (ESC)"
+            >
+              ×
+            </button>
+          )}
+        </div>
+
+        {/* Presets */}
       <div className="toolbar-section">
         <label className="toolbar-label">Preset</label>
         <select
@@ -342,6 +385,7 @@ export const TextFormattingToolbar: React.FC<TextFormattingToolbarProps> = ({
           </div>
         </>
       )}
-    </div>
+      </div>
+    </>
   );
 };
