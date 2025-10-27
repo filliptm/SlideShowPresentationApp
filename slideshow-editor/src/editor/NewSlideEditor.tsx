@@ -12,6 +12,7 @@ interface SlideEditorProps {
 
 export const NewSlideEditor: React.FC<SlideEditorProps> = ({ presentation, onUpdate, onPlay }) => {
   const [selectedSlideIndex, setSelectedSlideIndex] = useState<number>(0);
+  const [editingSlideNameIndex, setEditingSlideNameIndex] = useState<number | null>(null);
 
   // Ensure all slides have elements array (migration from old format)
   const ensureSlideFormat = (slide: any): Slide => {
@@ -135,6 +136,12 @@ export const NewSlideEditor: React.FC<SlideEditorProps> = ({ presentation, onUpd
     onUpdate({ ...normalizedPresentation, slides });
   };
 
+  const renameSlideName = (index: number, newName: string) => {
+    const slides = [...normalizedPresentation.slides];
+    slides[index] = { ...slides[index], name: newName };
+    onUpdate({ ...normalizedPresentation, slides });
+  };
+
   return (
     <div className="new-slide-editor">
       <div className="sidebar">
@@ -152,6 +159,37 @@ export const NewSlideEditor: React.FC<SlideEditorProps> = ({ presentation, onUpd
             >
               <div className="slide-preview">
                 <span className="slide-number">{index + 1}</span>
+                {editingSlideNameIndex === index ? (
+                  <input
+                    type="text"
+                    className="slide-name-input"
+                    defaultValue={slide.name || `Slide ${index + 1}`}
+                    autoFocus
+                    onClick={(e) => e.stopPropagation()}
+                    onBlur={(e) => {
+                      renameSlideName(index, e.target.value);
+                      setEditingSlideNameIndex(null);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        renameSlideName(index, e.currentTarget.value);
+                        setEditingSlideNameIndex(null);
+                      } else if (e.key === 'Escape') {
+                        setEditingSlideNameIndex(null);
+                      }
+                    }}
+                  />
+                ) : (
+                  <span
+                    className="slide-name"
+                    onDoubleClick={(e) => {
+                      e.stopPropagation();
+                      setEditingSlideNameIndex(index);
+                    }}
+                  >
+                    {slide.name || `Slide ${index + 1}`}
+                  </span>
+                )}
                 <span className="slide-info">{slide.elements.length} elements</span>
               </div>
               <div className="slide-actions">

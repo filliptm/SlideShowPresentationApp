@@ -58,6 +58,7 @@ export type SlideElement = TextElement | ImageElement | VideoElement;
 export interface Slide {
   id: string;
   type: SlideType;
+  name?: string;
   elements: SlideElement[];
   background?: string;
   backgroundImage?: string;

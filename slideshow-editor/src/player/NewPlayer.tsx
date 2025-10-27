@@ -150,26 +150,9 @@ export const NewPlayer: React.FC<PlayerProps> = ({ presentation, onExit }) => {
         </div>
       </div>
 
-      <div className="player-controls">
-        <button onClick={goToPrevSlide} disabled={currentSlideIndex === 0}>
-          ← Previous
-        </button>
-        <span className="slide-counter">
-          {currentSlideIndex + 1} / {presentation.slides.length}
-        </span>
-        <button
-          onClick={goToNextSlide}
-          disabled={currentSlideIndex === presentation.slides.length - 1}
-        >
-          Next →
-        </button>
-        <button onClick={onExit} className="exit-btn">
-          Exit (ESC)
-        </button>
-      </div>
-
-      <div className="keyboard-hint">
-        Use arrow keys, space, or buttons to navigate
+      {/* Minimal slide counter */}
+      <div className="slide-counter-minimal">
+        {currentSlideIndex + 1} / {presentation.slides.length}
       </div>
     </div>
   );
